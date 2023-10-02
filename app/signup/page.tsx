@@ -1,12 +1,18 @@
 import { Flex, Heading } from "@chakra-ui/react";
-import { FncTodoList } from "./components/FncTodoList";
+import type { Metadata } from "next";
+import { FncSignUp } from "../components/FncSignUp";
 
 const metaSetting = {
-  title: "TOP",
-  subtitle: "タスク一覧",
+  title: "SIGNUP",
+  subtitle: "新規登録",
 };
 
-const Top = () => {
+export const metadata: Metadata = {
+  title: metaSetting.title,
+  description: metaSetting.subtitle,
+};
+
+const SignUp = () => {
   return (
     <>
       <Flex w="100%" mb={5} alignItems="flex-end">
@@ -15,9 +21,9 @@ const Top = () => {
         </Heading>
         <p className="subtitle">{metaSetting.subtitle}</p>
       </Flex>
-      <FncTodoList />
+      <FncSignUp />
     </>
   );
 };
 
-export default Top;
+export default SignUp;

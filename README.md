@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## 公開 URL:
 
-## Getting Started
+ー
 
-First, run the development server:
+## Github
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+https://github.com/rmrmrmrmrmrm/230930_todo
+
+## テスト用アカウント
+
+ID ー
+Pass ー
+
+## アプリ概要
+
+ToDo
+
+## 作った目的
+
+## 機能
+
+・認証機能（新規登録、サインイン、ログアウト）
+・投稿機能（投稿、編集、削除）
+・コメント機能（投稿、削除）
+・フィルタリング機能
+・並び替え機能
+
+## 実装予定機能
+
+ー
+
+## 使用技術
+
+・TypeScript
+・React
+・Next.js
+・storybook
+
+## 画面遷移図
+
+```mermaid
+graph LR
+
+  subgraph auth [ ]
+    login <--> signin
+  end
+
+  subgraph access [アクセス制限]
+    logout
+    login---->|&nbsp認証&nbsp|top
+    top-->edit
+    top-->show
+  end
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ER 図
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```mermaid
+erDiagram
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+users ||--o{ posts : ""
+users ||--o{ comments: ""
+posts ||--o{ comments: ""
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+users {
+ string email "ユーザーemail"
+ string password "ユーザーパスワード"
+}
+posts{
+ timestamp Create "作成日"
+ string Detail "ToDo詳細"
+ string Id "ToDoID"
+ string Priority "優先度"
+ string Status "状態"
+ string Task "タイトル"
+ timestamp Update "更新日"
+}
+comments{
+ string Id "ToDoID"
+ timestamp commentCreate "コメント作成日"
+ string commentDetail "コメント詳細"
+ string commentId "コメントID"
+ string commentName "コメント記述者"
+}
+```

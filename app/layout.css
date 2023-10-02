@@ -1,0 +1,35 @@
+html {
+  font-size: 62.5%; /* 10px */
+  font-size: 75%; /* 12px */
+  font-size: 87.5%; /* 14px */
+}
+.subtitle {
+  color: gray;
+  padding-left: 0.3em;
+}
+/* FncTodoList */
+.top_timestamp {
+}
+.todolist {
+}
+.todolist th {
+  padding: 0.8rem 0.5rem;
+}
+.todolist tbody tr {
+}
+.todolist tbody tr td {
+  padding: 0.8rem 0.5rem;
+}
+.todolist tbody tr td.top_td_task {
+}
+.todolist tbody tr td.top_td_status button {
+  height: 5em;
+}
+.todolist tbody tr td.top_td_priority {
+}
+.todolist tbody tr td.top_td_timestamp {
+  letter-spacing: -0.05em;
+  font-size: 0.9em;
+}
+.todolist tbody tr td.top_td_action {
+}
