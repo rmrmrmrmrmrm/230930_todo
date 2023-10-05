@@ -3,7 +3,7 @@
 import { Button } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 
-export const BackButton: React.FC = () => {
+export const ButtonBack: React.FC = () => {
   const router = useRouter();
   const linkToTop = () => router.back();
   return (

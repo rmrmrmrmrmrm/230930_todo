@@ -1,7 +1,7 @@
 "use client";
 
 import { Heading, Box, Button, Text, Input, Flex, Textarea, FormControl } from "@chakra-ui/react";
-import { BackButton } from "./BackButton";
+import { ButtonBack } from "./ButtonBack";
 import { useEffect, useState } from "react";
 import { doc, getDoc, serverTimestamp, Timestamp, updateDoc } from "firebase/firestore";
 import db from "../lib/firebase";
@@ -81,7 +81,7 @@ export default function FncEdit() {
   return (
     <Box w="100%">
       <Flex justify="end">
-        <BackButton />
+        <ButtonBack />
       </Flex>
 
       <form onSubmit={handleSubmit}>

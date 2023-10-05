@@ -1,4 +1,4 @@
-import { Flex, Heading } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import type { Metadata } from "next";
 import { FncCreate } from "../components/FncCreate";
 
@@ -16,10 +16,12 @@ const Create = () => {
   return (
     <>
       <Flex w="100%" mb={5} alignItems="flex-end">
-        <Heading as="h2" lineHeight="1">
+        <Text fontSize={20} fontWeight={700} lineHeight={1}>
           {metaSetting.title}
-        </Heading>
-        <p className="subtitle">{metaSetting.subtitle}</p>
+        </Text>
+        <Text fontSize={10} className="subtitle">
+          {metaSetting.subtitle}
+        </Text>
       </Flex>
       <FncCreate />
     </>

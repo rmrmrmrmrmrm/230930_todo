@@ -1,5 +1,5 @@
 // "use client"; あると metadata に怒られる
-import { Flex, Heading } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import type { Metadata } from "next";
 import FncEdit from "../../components/FncEdit";
 
@@ -20,10 +20,12 @@ const Edit = () => {
   return (
     <>
       <Flex w="100%" mb={5} alignItems="flex-end">
-        <Heading as="h2" lineHeight="1">
+        <Text fontSize={20} fontWeight={700} lineHeight={1}>
           {metaSetting.title}
-        </Heading>
-        <p className="subtitle">{metaSetting.subtitle}</p>
+        </Text>
+        <Text fontSize={10} className="subtitle">
+          {metaSetting.subtitle}
+        </Text>
       </Flex>
       <FncEdit />
     </>

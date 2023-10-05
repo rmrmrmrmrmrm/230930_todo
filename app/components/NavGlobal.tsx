@@ -15,10 +15,22 @@ import {
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
+  Spacer,
+  Heading,
+  Container,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon, ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
+//logout
+import { ButtonLogout } from "./ButtonLogout";
+//user
+import { useAuthContext } from "../context/AuthContext";
 
 export default function WithSubnavigation() {
+  // user
+  const { user } = useAuthContext();
+  //
   const { isOpen, onToggle } = useDisclosure();
 
   return (
@@ -35,45 +47,56 @@ export default function WithSubnavigation() {
         align={"center"}
       >
         <Flex flex={{ base: 1, md: "auto" }} ml={{ base: -2 }} display={{ base: "flex", md: "none" }}>
-          <IconButton
-            onClick={onToggle}
-            icon={isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />}
-            variant={"ghost"}
-            aria-label={"Toggle Navigation"}
-          />
+          {/* メインナビ {user && (
+            <IconButton
+              onClick={onToggle}
+              icon={isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />}
+              variant={"ghost"}
+              aria-label={"Toggle Navigation"}
+            />
+          )} */}
         </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-          <Text
-            textAlign={useBreakpointValue({ base: "center", md: "left" })}
-            fontFamily={"heading"}
-            color={useColorModeValue("gray.800", "white")}
-          >
-            Logo
-          </Text>
 
+        <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
+          <Heading as="h1">
+            <Text
+              textAlign={useBreakpointValue({ base: "center", md: "left" })}
+              fontFamily={"heading"}
+              color={useColorModeValue("gray.800", "white")}
+            >
+              <Link href={"/"}>TODO</Link>
+            </Text>
+          </Heading>
           <Flex display={{ base: "none", md: "flex" }} ml={10}>
-            <DesktopNav />
+            {/* メインナビ {user && <DesktopNav />} */}
           </Flex>
         </Flex>
 
-        <Stack flex={{ base: 1, md: 0 }} justify={"flex-end"} direction={"row"} spacing={6}>
-          <Button as={"a"} fontSize={"sm"} fontWeight={400} variant={"link"} href={"#"}>
-            Sign In
-          </Button>
-          <Button
-            as={"a"}
-            display={{ base: "none", md: "inline-flex" }}
-            fontSize={"sm"}
-            fontWeight={600}
-            color={"white"}
-            bg={"pink.400"}
-            href={"#"}
-            _hover={{
-              bg: "pink.300",
-            }}
-          >
-            Sign Up
-          </Button>
+        {/* 右ボタン */}
+        <Stack flex={{ base: 1, md: 0 }} justify={"flex-end"} direction={"row"} spacing={3}>
+          {!user ? (
+            <>
+              <Button type="button" as={"a"} fontSize={"sm"} href={"/login"}>
+                ログイン
+              </Button>
+              <Button
+                as={"a"}
+                display={{ base: "none", md: "inline-flex" }}
+                fontSize={"sm"}
+                fontWeight={600}
+                color={"white"}
+                bg={"pink.400"}
+                href={"/login"}
+                _hover={{
+                  bg: "pink.300",
+                }}
+              >
+                新規登録
+              </Button>
+            </>
+          ) : (
+            <ButtonLogout />
+          )}
         </Stack>
       </Flex>
 
@@ -90,7 +113,7 @@ const DesktopNav = () => {
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
 
   return (
-    <Stack direction={"row"} spacing={4}>
+    <Stack direction={"row"} spacing={4} align="center">
       {NAV_ITEMS.map((navItem) => (
         <Box key={navItem.label}>
           <Popover trigger={"hover"} placement={"bottom-start"}>
@@ -230,41 +253,23 @@ interface NavItem {
 
 const NAV_ITEMS: Array<NavItem> = [
   {
-    label: "Inspiration",
-    children: [
-      {
-        label: "Explore Design Work",
-        subLabel: "Trending Design to inspire you",
-        href: "#",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "#",
-      },
-    ],
+    label: "タスク一覧",
+    href: "/",
   },
   {
-    label: "Find Work",
-    children: [
-      {
-        label: "Job Board",
-        subLabel: "Find your dream design job",
-        href: "#",
-      },
-      {
-        label: "Freelance Projects",
-        subLabel: "An exclusive list for contract work",
-        href: "#",
-      },
-    ],
+    label: "タスクを書く",
+    href: "/create",
   },
-  {
-    label: "Learn Design",
-    href: "#",
-  },
-  {
-    label: "Hire Designers",
-    href: "#",
-  },
+  //{
+  //  label: "テスト",
+  //  href: "/test",
+  //},
+  //{
+  //  label: "テストshow",
+  //  href: "/show/BZgofB5tp30xrWgcsQB9",
+  //},
+  //{
+  //  label: "テストedit",
+  //  href: "/edit/BZgofB5tp30xrWgcsQB9",
+  //},
 ];

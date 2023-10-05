@@ -25,7 +25,8 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
 
   return (
     <>
-      <Container maxW="800px" border="1px" my={10} centerContent>
+      {/*  border="1px" */}
+      <Container maxW="800px" my={10} centerContent>
         {children}
       </Container>
     </>

@@ -6,7 +6,7 @@ import { useState } from "react";
 import { serverTimestamp, setDoc, doc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import db from "../lib/firebase";
-import { BackButton } from "./BackButton";
+import { ButtonBack } from "./ButtonBack";
 
 const initialTodo = {
   Task: "",
@@ -53,7 +53,7 @@ export const FncCreate: React.FC = () => {
     <>
       <Box w="100%">
         <Flex justify="end">
-          <BackButton />
+          <ButtonBack />
         </Flex>
 
         <form onSubmit={handleSubmit}>

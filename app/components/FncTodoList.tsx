@@ -88,8 +88,10 @@ export const FncTodoList: React.FC = () => {
   };
 
   const DeleteTodo = async (Id: string) => {
-    await deleteDoc(doc(db, "posts", Id));
-    todoDataFromFirebase();
+    if (window.confirm("削除してよろしいですか？")) {
+      await deleteDoc(doc(db, "posts", Id));
+      todoDataFromFirebase();
+    }
   };
 
   const onChangeSubTodoPriority = async (Id: string, e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -160,7 +162,7 @@ export const FncTodoList: React.FC = () => {
     <>
       {/* HEAD */}
       <HStack mb={5} w="100%">
-        <HStack spacing={2}>
+        <HStack spacing={2} align="flex-end">
           <FormControl>
             <FormLabel>SEARCH</FormLabel>
             <InputGroup size="sm">

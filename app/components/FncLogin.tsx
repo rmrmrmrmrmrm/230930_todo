@@ -82,18 +82,18 @@ export const FncLogin = () => {
               borderRadius={"100px"}
               width={"200px"}
             >
-              LOGIN
+              ログイン
             </Button>
           </Box>
           <Box mt={"15px"} textAlign={"center"}>
             <VStack textAlign={"center"}>{error && <p style={{ color: "red" }}>{error}</p>}</VStack>
           </Box>
           <Box mt={"15px"} textAlign={"center"}>
-            ユーザー登録は
+            アカウントを持っていない方は
             <Link href={"/signup"} style={{ color: "gray" }}>
-              こちら
+              新規登録
             </Link>
-            から
+            から。
           </Box>
         </form>
       </Box>
