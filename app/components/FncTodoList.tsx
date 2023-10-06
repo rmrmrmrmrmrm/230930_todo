@@ -23,7 +23,16 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { Timestamp, collection, deleteDoc, doc, getDocs, orderBy, query, updateDoc } from "firebase/firestore";
+import {
+  Timestamp,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  orderBy,
+  query,
+  updateDoc,
+} from "firebase/firestore";
 import db from "../lib/firebase";
 import Link from "next/link";
 import ReactPaginate from "react-paginate";
@@ -40,21 +49,19 @@ interface TodoItem {
   Update: string;
 }
 
-const dateFormat = (date: string) => {
+const dateFormat = (date: Timestamp | string) => {
+  // もしdateがstring型であれば、toDateメソッドを呼び出してTimestamp型に変換する。(0, 0)はFirestoreのTimestampを作成する際に必要なsecondsとnanosecondsの2つの引数。
+  const timestamp = typeof date === "string" ? new Timestamp(0, 0) : date;
   // .toDate() はfirestore のメソッドでタイムスタンプをJSのDate型にしてる
-  const formattedDate = format(date.toDate(), "yyyy-MM-dd HH:mm");
+  const formattedDate = format(timestamp.toDate(), "yyyy-MM-dd HH:mm");
   return formattedDate;
 };
 
 export const FncTodoList: React.FC = () => {
   const [todos, setTodos] = useState<TodoItem[]>([]);
-  const [selectedPriority, setSelectedPriority] = useState<string>("");
-  const [selectedStatus, setSelectedStatus] = useState<string>("");
   const router = useRouter();
 
-  const initialPriority = "";
-  const initialStatus = "";
-
+  // todoデータ取得
   const todoDataFromFirebase = async () => {
     alert("todo取得");
     const todoData = collection(db, "posts");
@@ -74,26 +81,70 @@ export const FncTodoList: React.FC = () => {
     });
     setTodos(getTodoData);
   };
-
   useEffect(() => {
     todoDataFromFirebase();
   }, []);
-
+  // 作成
   const linkToCreate = () => {
     router.push("/create");
   };
-
+  // 編集
   const linkToEdit = (Id: string) => {
     router.push(`/edit/${Id}`);
   };
-
+  // 削除
   const DeleteTodo = async (Id: string) => {
     if (window.confirm("削除してよろしいですか？")) {
       await deleteDoc(doc(db, "posts", Id));
       todoDataFromFirebase();
     }
   };
-
+  // キーワード検索
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const handleSearch = async (event: any) => {
+    // 入力されたデータを取得
+    const searchtext = event.target.value.toLowerCase();
+    // useStateに持たせる
+    setSearchTerm(searchtext);
+    console.log(searchTerm);
+  };
+  // キーワードを元に検索
+  const searchFilter = () => {
+    const filteredList = todos.filter((todo: any) => todo.Task.toLowerCase().includes(searchTerm));
+    console.log(filteredList);
+    // 検索した内容を表示する
+    setTodos(filteredList);
+  };
+  // 優先度・状態のフィルター
+  const [selectedPriority, setSelectedPriority] = useState<string>("");
+  const [selectedStatus, setSelectedStatus] = useState<string>("");
+  const initialPriority = "";
+  const initialStatus = "";
+  const filteredTodos = todos.filter((todo) => {
+    switch (true) {
+      // 条件なし
+      case selectedStatus === "" && selectedPriority === "":
+        return true;
+      //
+      case selectedStatus === "" && selectedPriority !== "":
+        return todo.Priority === selectedPriority;
+      //
+      case selectedStatus !== "" && selectedPriority === "":
+        return todo.Status === selectedStatus;
+      //
+      default:
+        return todo.Status === selectedStatus && todo.Priority === selectedPriority;
+    }
+  });
+  // フィルターの解除
+  const handleReset = () => {
+    setSelectedPriority(initialPriority);
+    setSelectedStatus(initialStatus);
+    alert("検索キーワードを空にする");
+    setSearchTerm("");
+    todoDataFromFirebase();
+  };
+  // 優先度の変更
   const onChangeSubTodoPriority = async (Id: string, e: React.ChangeEvent<HTMLSelectElement>) => {
     await updateDoc(doc(db, "posts", Id), {
       Priority: e.target.value,
@@ -101,7 +152,7 @@ export const FncTodoList: React.FC = () => {
     });
     todoDataFromFirebase();
   };
-
+  // 状態の変更
   const onClickStatus = async (Id: string, Status: string) => {
     switch (Status) {
       case "NOT STARTED":
@@ -127,32 +178,12 @@ export const FncTodoList: React.FC = () => {
         break;
     }
   };
-
-  const filteredTodos = todos.filter((todo) => {
-    switch (true) {
-      case selectedStatus === "" && selectedPriority === "":
-        return true;
-      case selectedStatus === "" && selectedPriority !== "":
-        return todo.Priority === selectedPriority;
-      case selectedStatus !== "" && selectedPriority === "":
-        return todo.Status === selectedStatus;
-      default:
-        return todo.Status === selectedStatus && todo.Priority === selectedPriority;
-    }
-  });
-
-  const handleReset = () => {
-    setSelectedPriority(initialPriority);
-    setSelectedStatus(initialStatus);
-  };
-
+  // ページネーション
   const itemsPerPage = 6;
   const [itemsOffset, setItemsOffset] = useState(0);
   const endOffset = itemsOffset + itemsPerPage;
-
   const currentAlbums = filteredTodos.slice(itemsOffset, endOffset);
   const pageCount = Math.ceil(filteredTodos.length / itemsPerPage);
-
   const handlePageClick = (e: { selected: number }) => {
     const newOffset = (e.selected * itemsPerPage) % filteredTodos.length;
     setItemsOffset(newOffset);
@@ -166,10 +197,21 @@ export const FncTodoList: React.FC = () => {
           <FormControl>
             <FormLabel>SEARCH</FormLabel>
             <InputGroup size="sm">
+              <Input
+                type="text"
+                placeholder="タスクを検索"
+                onChange={handleSearch}
+                value={searchTerm}
+              />
               <InputRightElement>
-                <IconButton aria-label="Search task" icon={<SearchIcon />} size="sm" />
+                <IconButton
+                  aria-label="Search task"
+                  icon={<SearchIcon />}
+                  size="sm"
+                  type="submit"
+                  onClick={() => searchFilter()}
+                />
               </InputRightElement>
-              <Input placeholder="タスクを検索" />
             </InputGroup>
           </FormControl>
           <FormControl>
@@ -281,7 +323,11 @@ export const FncTodoList: React.FC = () => {
                     )}
                   </Td>
                   <Td width="12%" className="top_td_priority">
-                    <Select size="sm" value={todo.Priority} onChange={(e) => onChangeSubTodoPriority(todo.Id, e)}>
+                    <Select
+                      size="sm"
+                      value={todo.Priority}
+                      onChange={(e) => onChangeSubTodoPriority(todo.Id, e)}
+                    >
                       <option value="High">High</option>
                       <option value="Middle">Middle</option>
                       <option value="Low">Low</option>
