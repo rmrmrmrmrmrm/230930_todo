@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { doc, getDoc, serverTimestamp, Timestamp, updateDoc } from "firebase/firestore";
 import db from "../lib/firebase";
 import { useRouter, usePathname } from "next/navigation";
-import { format } from "date-fns";
+import { dateFormat } from "../util/dateFormat";
 
 interface TodoData {
   Task: string;
@@ -14,14 +14,6 @@ interface TodoData {
   Create: string;
   Update: string;
 }
-
-const dateFormat = (date: Timestamp | string) => {
-  // もしdateがstring型であれば、toDateメソッドを呼び出してTimestamp型に変換する。(0, 0)はFirestoreのTimestampを作成する際に必要なsecondsとnanosecondsの2つの引数。
-  const timestamp = typeof date === "string" ? new Timestamp(0, 0) : date;
-  // .toDate() はfirestore のメソッドでタイムスタンプをJSのDate型にしてる
-  const formattedDate = format(timestamp.toDate(), "yyyy-MM-dd HH:mm");
-  return formattedDate;
-};
 
 // export const FncEdit = () => { うごかない
 // export default function FncEdit() { うごく
