@@ -23,16 +23,7 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import {
-  Timestamp,
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  orderBy,
-  query,
-  updateDoc,
-} from "firebase/firestore";
+import { Timestamp, collection, deleteDoc, doc, getDocs, orderBy, query, updateDoc } from "firebase/firestore";
 import db from "../lib/firebase";
 import Link from "next/link";
 import ReactPaginate from "react-paginate";
@@ -55,7 +46,7 @@ export const FncTodoList: React.FC = () => {
 
   // todoデータ取得
   const todoDataFromFirebase = async () => {
-    alert("todo取得");
+    // alert("todo取得"); //無限レンダリングセーフ
     const todoData = collection(db, "posts");
     const q = query(todoData, orderBy("Update", "desc"));
     const snapShot = await getDocs(q);
@@ -189,12 +180,7 @@ export const FncTodoList: React.FC = () => {
           <FormControl>
             <FormLabel>SEARCH</FormLabel>
             <InputGroup size="sm">
-              <Input
-                type="text"
-                placeholder="タスクを検索"
-                onChange={handleSearch}
-                value={searchTerm}
-              />
+              <Input type="text" placeholder="タスクを検索" onChange={handleSearch} value={searchTerm} />
               <InputRightElement>
                 <IconButton
                   aria-label="Search task"
@@ -315,11 +301,7 @@ export const FncTodoList: React.FC = () => {
                     )}
                   </Td>
                   <Td width="12%" className="top_td_priority">
-                    <Select
-                      size="sm"
-                      value={todo.Priority}
-                      onChange={(e) => onChangeSubTodoPriority(todo.Id, e)}
-                    >
+                    <Select size="sm" value={todo.Priority} onChange={(e) => onChangeSubTodoPriority(todo.Id, e)}>
                       <option value="High">High</option>
                       <option value="Middle">Middle</option>
                       <option value="Low">Low</option>

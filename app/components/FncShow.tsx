@@ -59,7 +59,7 @@ export const FncShow = () => {
   const postsCol = collection(db, "posts");
   const queryRef = query(postsCol, where("Id", "==", id));
   const fetchData = async () => {
-    alert("ToDo読み込み");
+    // alert("ToDo読み込み"); //無限レンダリングセーフ
     try {
       const querySnapshot = await getDocs(queryRef);
       const todoDocObj = querySnapshot.docs[0];
@@ -82,7 +82,7 @@ export const FncShow = () => {
 
   // コメント表示
   const fetchComment = async () => {
-    alert("コメント読み込み");
+    // alert("コメント読み込み"); //無限レンダリングセーフ
     try {
       const cmtCol = collection(db, "comments");
       const cmtQueryRef = query(cmtCol, where("Id", "==", id), orderBy("commentCreate", "desc"));
@@ -162,7 +162,7 @@ export const FncShow = () => {
         </Box>
       </Flex>
 
-      <Flex direction={{ base: "column", md: "row" }} align="flex-start">
+      <Flex direction={{ base: "column", md: "row" }} align="flex-start" w="100%">
         {/* Todo */}
         <Box
           w={{ base: "100%", md: "55%" }}
